@@ -1,0 +1,15 @@
+{
+  "name": "crops-monitoring-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Crops Monitoring System",
+  "scripts": {
+    "serve": "vite"
+  },
+  "dependencies": {
+    "vite": "^4.1.4",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.0.0"
+  }
+}
