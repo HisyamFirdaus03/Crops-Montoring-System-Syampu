@@ -12,7 +12,7 @@ $app = AppFactory::create();
 $db = (new Database())->getConnection();
 
 // JWT Configuration
-$secretKey = 'your-secret-key'; // Replace with a secure key
+$secretKey = 'your-secret-key'; 
 $jwtAlgorithm = 'HS256';
 
 // CORS Middleware
