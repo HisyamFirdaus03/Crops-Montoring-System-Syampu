@@ -197,11 +197,61 @@ $app->get('/api/alerts', function (Request $request, Response $response) use ($d
 
 // POST /api/control-command
 $app->post('/api/control-command', function (Request $request, Response $response) use ($db) {
-    $data = $request->getParsedBody();
-    $stmt = $db->prepare("INSERT INTO actuator_commands (actuator_type, command) VALUES (?, ?)");
-    $stmt->execute([$data['actuator_type'], $data['command']]);
-    $response->getBody()->write(json_encode(['message' => 'Command sent successfully']));
-    return $response->withHeader('Content-Type', 'application/json');
-});
+    $rawBody = $request->getBody()->getContents();
+    error_log("Control command raw body: " . $rawBody); // Log raw body for debugging
+    $data = json_decode($rawBody, true); // Manually decode JSON body
+
+    // Validate payload
+    if (!is_array($data) || empty($data)) {
+        error_log("Control command failed: Invalid or empty payload");
+        $response->getBody()->write(json_encode(['error' => 'Invalid or empty payload']));
+        return $response
+            ->withStatus(400)
+            ->withHeader('Content-Type', 'application/json')
+            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    }
+
+    if (!isset($data['actuator_type']) || !isset($data['command'])) {
+        error_log("Control command failed: Missing actuator_type or command");
+        $response->getBody()->write(json_encode(['error' => 'Missing actuator_type or command']));
+        return $response
+            ->withStatus(400)
+            ->withHeader('Content-Type', 'application/json')
+            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    }
+
+    try {
+        // Check if actuator_type already exists
+        $stmt = $db->prepare("SELECT id FROM actuator_commands WHERE actuator_type = ?");
+        $stmt->execute([$data['actuator_type']]);
+        $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($existing) {
+            // Update existing row
+            $stmt = $db->prepare("UPDATE actuator_commands SET command = ?, timestamp = CURRENT_TIMESTAMP WHERE actuator_type = ?");
+            $stmt->execute([$data['command'], $data['actuator_type']]);
+            error_log("Control command updated: {$data['actuator_type']} - {$data['command']}");
+            $response->getBody()->write(json_encode(['message' => 'Command updated successfully']));
+        } else {
+            // Insert new row
+            $stmt = $db->prepare("INSERT INTO actuator_commands (actuator_type, command) VALUES (?, ?)");
+            $stmt->execute([$data['actuator_type'], $data['command']]);
+            error_log("Control command saved: {$data['actuator_type']} - {$data['command']}");
+            $response->getBody()->write(json_encode(['message' => 'Command saved successfully']));
+        }
+
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    } catch (PDOException $e) {
+        error_log("Control command failed: Database error - " . $e->getMessage());
+        $response->getBody()->write(json_encode(['error' => 'Database error: ' . $e->getMessage()]));
+        return $response
+            ->withStatus(500)
+            ->withHeader('Content-Type', 'application/json')
+            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    }
+})->add($jwtMiddleware);
 
 $app->run();
