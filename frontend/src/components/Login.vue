@@ -39,7 +39,7 @@ export default {
         console.log('Login response:', data);
         if (response.ok) {
           localStorage.setItem('token', data.token);
-          this.$emit('login-success');
+          this.$router.push('/dashboard');
         } else {
           alert(data.error || 'Login failed');
         }
