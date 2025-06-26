@@ -100,6 +100,7 @@ Crops-Montoring-System-Syampu/
 ### 4. Set Up the ESP8266
 1. **Install Arduino IDE and Libraries**:
    - Add ESP8266 board support: `http://arduino.esp8266.com/stable/package_esp8266com_index.json` in Arduino IDE Preferences.
+   - Install ESP8266 CH340 Driver: `https://www.wch.cn/download/file?id=65`
    - Install libraries: `ESP8266WiFi`, `ESP8266HTTPClient`, `ArduinoJson` (v6.x) via Library Manager.
 2. **Configure `sensor.ino`**:
    - Open `esp8266/sensor.ino` in Arduino IDE.
