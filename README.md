@@ -2,7 +2,7 @@
 
 The Crops Monitoring System is a web-based application with an ESP8266 integration for real-time monitoring of environmental conditions (temperature, soil moisture, humidity, light intensity, and CO2 levels) to support agricultural crop management. The system includes a PHP backend (Slim framework), a Vue.js frontend, a MySQL database, and an ESP8266 module for sensor data collection. It features user authentication, real-time sensor data display, alerts for critical conditions (e.g., temperature > 30°C), and actuator command logging.
 
-**Note**: The project directory is named `Crops-Montoring-System-Syampu` due to a typo ("Montoring"). You can optionally rename it to `Crops-Monitoring-System-Syampu` for clarity.
+**Note**: The project directory is named `Crops-Montoring-System` due to a typo ("Montoring"). You can optionally rename it to `Crops-Monitoring-System-Syampu` for clarity.
 
 ## Features
 - User authentication (login/register) with JWT-based security.
@@ -50,17 +50,17 @@ Crops-Montoring-System-Syampu/
 - Place the project in XAMPP’s `htdocs`:
   ```powershell
   cd C:\xampp\htdocs
-  git clone <repository-url> Crops-Montoring-System-Syampu
+  git clone <repository-url> Crops-Montoring-System
   ```
 - **Optional**: Rename the directory to fix the typo:
   ```powershell
-  ren Crops-Montoring-System-Syampu Crops-Monitoring-System-Syampu
+  ren Crops-Montoring-System-Syampu Crops-Monitoring-System
   ```
 
 ### 2. Set Up the Backend
 1. **Install PHP Dependencies**:
    ```powershell
-   cd C:\xampp\htdocs\Crops-Montoring-System-Syampu\backend
+   cd backend
    composer install
    ```
 2. **Configure MySQL**:
@@ -77,7 +77,7 @@ Crops-Montoring-System-Syampu/
 3. **Run the Backend**:
    - Start the PHP development server:
      ```powershell
-     cd C:\xampp\htdocs\Crops-Montoring-System-Syampu\backend
+     cd backend
      php -S 0.0.0.0:3000 -t public
      ```
    - Ensure port 3000 is open in Windows Firewall:
@@ -87,7 +87,7 @@ Crops-Montoring-System-Syampu/
 ### 3. Set Up the Frontend
 1. **Install Node.js Dependencies**:
    ```powershell
-   cd C:\xampp\htdocs\Crops-Montoring-System-Syampu\frontend
+   cd frontend
    npm install
    ```
 2. **Run the Frontend**:
@@ -107,7 +107,8 @@ Crops-Montoring-System-Syampu/
      ```cpp
      const char* ssid = "your-wifi-ssid";
      const char* password = "your-wifi-password";
-     const char* serverUrl = "http://192.168.178.209:3000/api/sensor-data"; // Replace with your laptop’s IP
+     const char* sensorUrl = "http://[Your Laptop IP]:[Host Port]/api/sensor-data"; //Replace Your Laptop IP with your laptop IP (check ipconfig in cmd)
+     const char* actuatorUrl = "http://[Your Laptop IP]:[Host Port]/api/actuator-status"; //Replace also Host Port with your host port (Port: 3000 (default))
      ```
    - Get a JWT token:
      - In Postman, send `POST http://192.168.178.209:3000/api/login`:
@@ -175,10 +176,10 @@ Crops-Montoring-System-Syampu/
     ```
 
 ## Notes
-- **Directory Typo**: Rename `Crops-Montoring-System-Syampu` to `Crops-Monitoring-System-Syampu` for clarity:
+- **Directory Typo**: Rename `Crops-Montoring-System` to `Crops-Monitoring-System` for clarity:
   ```powershell
   cd C:\xampp\htdocs
-  ren Crops-Montoring-System-Syampu Crops-Monitoring-System-Syampu
+  ren Crops-Montoring-System-Syampu Crops-Monitoring-System
   ```
 - **Security**: Replace `your-secret-key` in `index.php` with a secure key (e.g., `php -r "echo bin2hex(random_bytes(32));"`).
 - **Token Expiry**: JWT tokens expire after 1 hour. Refresh via `/api/login`.
