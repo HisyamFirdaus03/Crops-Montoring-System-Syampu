@@ -21,7 +21,6 @@ INSERT INTO alerts (type, message, threshold_value, actual_value, is_active, tim
 
 -- Insert test actuator commands
 INSERT INTO actuator_commands (actuator_type, command, timestamp) VALUES
-('irrigation', 'turn_on', '2025-06-25 09:10:00'),
 ('fan', 'turn_on', '2025-06-25 09:15:00'),
 ('irrigation', 'turn_off', '2025-06-25 11:05:00'),
 ('heater', 'set_temperature_25', '2025-06-25 12:00:00');
