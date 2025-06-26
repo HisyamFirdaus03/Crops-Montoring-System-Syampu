@@ -122,6 +122,9 @@ Crops-Montoring-System-Syampu/
        ```cpp
        const char* jwtToken = "your-jwt-token-here";
        ```
+
+     - Note: If you are having trouble compiling and uploading the sensor.ino, you need to make sure you have the ESP8266 driver installed.
+     - Link ESP8266 Driver (CH340): `https://www.wch.cn/download/file?id=65` 
 3. **Upload Code**:
    - Select `NodeMCU 1.0` and the correct port in Arduino IDE.
    - Upload and open Serial Monitor (115200 baud).
